@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <getopt.h> 
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 char* const short_options = "pd";
 
 int path_check(const char *path){
@@ -12,7 +16,7 @@ int path_check(const char *path){
     char trg_path[1024];
     realpath(path, trg_path);
     if (strncmp(trg_path, sandbox, strlen(sandbox)) != 0){ 
-        fprintf( stderr,"[sandbox]: access to %s is not allowed\n", path);
+        fprintf( stderr,"ls: cannot open directory '%s'\n", path);
         return 0;
     }   
     return 1;
@@ -87,15 +91,24 @@ int command_getopt(int argc, char *argv[])
 		}
 //		printf("\n");
 //		printf("\n%s \n", arg);
+
 		execvp(arg[0], arg);
 	}
 //	printf("pl=%d \ndl=%d \n--=%d\n", pl, dl, ddl);
-    return 0;
+
+
+
+	return 0;
 }
 
 int main(int argc, char**argv){
+	// /dev/tty => control terminal
+	int fd = open("/dev/tty", O_WRONLY, 0666);
+	dup2(fd, STDERR_FILENO);
+
 	setenv("LD_PRELOAD","./sandboxso.so",1);
 	setenv("path_now", ".", 1);
 	command_getopt(argc, argv);
-    return 0;
+	
+	return 0;
 }

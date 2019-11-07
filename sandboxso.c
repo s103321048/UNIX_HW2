@@ -26,6 +26,8 @@ typedef int (*t_rename)(const char *old, const char *new);
 typedef int (*t_rmdir)(const char *path);
 typedef int (*t_stat)(int ver, const char * path, struct stat * stat_buf);
 typedef int (*t_stat64)(int ver, const char * path, struct stat64 * stat_buf);
+typedef int (*t_statx)(int dirfd, const char *path, int flags, 
+		  unsigned int mask, struct statx *statxbuf);
 typedef int (*t_symlink)(const char *path1, const char *path2);
 typedef int (*t_unlink)(const char *path);
 
@@ -261,6 +263,16 @@ int __xstat(int ver, const char * path, struct stat * stat_buf){
         t_stat orig_stat;
         orig_stat = (t_stat)dlsym(RTLD_NEXT,"__xstat");
         return orig_stat( ver, path, stat_buf);
+    }   
+    return 0; 
+}
+
+int statx(int dirfd, const char *path, int flags,
+                 unsigned int mask, struct statx *statxbuf){
+     if ( path_check("statx", path) ){
+        t_statx orig_stat;
+        orig_stat = (t_statx)dlsym(RTLD_NEXT, "statx");
+        return orig_stat( dirfd, path, flags, mask, statxbuf);
     }   
     return 0; 
 }
