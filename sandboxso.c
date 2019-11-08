@@ -53,7 +53,7 @@ int chdir(const char *path){
         orig_chdir = (t_chdir)dlsym(RTLD_NEXT,"chdir");
         return orig_chdir( path );
     }
-    return 0;
+    return -1;
 }
 
 int chmod(const char *path, mode_t mode){
@@ -62,7 +62,7 @@ int chmod(const char *path, mode_t mode){
         orig_chmod = (t_chmod)dlsym(RTLD_NEXT,"chmod");
         return orig_chmod( path, mode );
     }
-    return 0;
+    return -1;
 }
 int chown(const char *path, uid_t owner, gid_t group){
     if ( path_check("chown", path) ){
@@ -70,7 +70,7 @@ int chown(const char *path, uid_t owner, gid_t group){
         orig_chown = (t_chown)dlsym(RTLD_NEXT, "chown");
         return orig_chown( path, owner, group);
     }
-    return 0;
+    return -1;
 }
 int creat(const char *path, mode_t mode){
     if ( path_check("creat", path) ){
@@ -78,7 +78,7 @@ int creat(const char *path, mode_t mode){
         orig_creat = (t_creat)dlsym(RTLD_NEXT, "creat");
         return orig_creat( path, mode);
     }
-    return 0;
+    return -1;
 }
 
 int creat64(const char *path, mode_t mode){
@@ -87,7 +87,7 @@ int creat64(const char *path, mode_t mode){
         orig_creat64 = (t_creat)dlsym(RTLD_NEXT, "creat64");
         return orig_creat64( path, mode);
     }
-    return 0;
+    return -1;
 }
 
 FILE *fopen(const char * restrict path, const char * restrict mode){
@@ -114,7 +114,7 @@ int link(const char *path1, const char *path2){
         orig_link = (t_link)dlsym(RTLD_NEXT, "link");
         return orig_link( path1, path2);
     }
-    return 0; 
+    return  -1; 
 }
 int mkdir(const char *path, mode_t mode){
     if ( path_check("mkdir", path) ){
@@ -122,7 +122,7 @@ int mkdir(const char *path, mode_t mode){
         orig_mkdir = (t_mkdir)dlsym(RTLD_NEXT, "mkdir");
         return orig_mkdir( path, mode);
     }   
-    return 0;
+    return  -1;
 }
 
 int open(const char *path, int oflag, ...){
@@ -144,7 +144,7 @@ int open(const char *path, int oflag, ...){
 		else
 			return orig_open(path, oflag);
     }
-	return 0;
+	return  -1;
 }
 
 int open64(const char *path, int oflag, ...){
@@ -166,7 +166,7 @@ int open64(const char *path, int oflag, ...){
 		else
 			return orig_open64(path, oflag);
     }
-	return 0;
+	return  -1;
 }
 
 int openat(int fd, const char *path, int oflag, ...){
@@ -188,7 +188,7 @@ int openat(int fd, const char *path, int oflag, ...){
 		else
 			return orig_openat(fd, path, oflag);
     }
-    return 0;
+    return  -1;
 }
 
 int openat64(int fd, const char *path, int oflag, ...){
@@ -210,7 +210,7 @@ int openat64(int fd, const char *path, int oflag, ...){
 		else
 			return orig_openat(fd, path, oflag);
     }
-    return 0;
+    return  -1;
 }
 DIR *opendir(const char *filename){
      if ( path_check("opendir", filename) ){
@@ -218,7 +218,7 @@ DIR *opendir(const char *filename){
         orig_opendir = (t_opendir)dlsym(RTLD_NEXT,"opendir");
         return orig_opendir( filename);
     }
-    return 0;
+    return  0;
 }
 
 ssize_t readlink(const char *restrict path, char *restrict buf, size_t bufsize){
@@ -227,7 +227,7 @@ ssize_t readlink(const char *restrict path, char *restrict buf, size_t bufsize){
         orig_readlink = (t_readlink)dlsym(RTLD_NEXT,"readlink");
         return orig_readlink( path, buf, bufsize);
     }   
-    return 0; 
+    return  -1; 
 }
 
 int remove(const char *path){
@@ -236,7 +236,7 @@ int remove(const char *path){
         orig_remove = (t_remove)dlsym(RTLD_NEXT,"remove");
         return orig_remove( path);
     }   
-    return 0; 
+    return  -1; 
 }
 
 
@@ -246,7 +246,7 @@ int rename(const char *old, const char *new){
         orig_rename = (t_rename)dlsym(RTLD_NEXT,"rename");
         return orig_rename( old, new);
     }   
-    return 0; 
+    return  -1; 
 }
 
 int rmdir(const char *path){
@@ -255,7 +255,7 @@ int rmdir(const char *path){
         orig_rmdir = (t_rmdir)dlsym(RTLD_NEXT,"rmdir");
         return orig_rmdir( path);
     }   
-    return 0; 
+    return  -1; 
 }
 
 int __xstat(int ver, const char * path, struct stat * stat_buf){
@@ -264,7 +264,7 @@ int __xstat(int ver, const char * path, struct stat * stat_buf){
         orig_stat = (t_stat)dlsym(RTLD_NEXT,"__xstat");
         return orig_stat( ver, path, stat_buf);
     }   
-    return 0; 
+    return -1; 
 }
 
 int statx(int dirfd, const char *path, int flags,
@@ -274,7 +274,7 @@ int statx(int dirfd, const char *path, int flags,
         orig_stat = (t_statx)dlsym(RTLD_NEXT, "statx");
         return orig_stat( dirfd, path, flags, mask, statxbuf);
     }   
-    return 0; 
+    return -1; 
 }
 
 int __lxstat(int ver, const char * path, struct stat * stat_buf){
@@ -283,7 +283,7 @@ int __lxstat(int ver, const char * path, struct stat * stat_buf){
         orig_stat = (t_stat)dlsym(RTLD_NEXT,"__lxstat");
         return orig_stat( ver, path, stat_buf);
     }
-    return 0;
+    return -1;
 }
 
 int __xstat64(int ver, const char * path, struct stat64 * stat_buf){
@@ -292,7 +292,7 @@ int __xstat64(int ver, const char * path, struct stat64 * stat_buf){
         orig_stat64 = (t_stat64)dlsym(RTLD_NEXT,"__xstat64");
         return orig_stat64( ver, path, stat_buf);
     }   
-    return 0; 
+    return -1; 
 }
 
 int __lxstat64(int ver, const char * path, struct stat64 * stat_buf){
@@ -301,7 +301,7 @@ int __lxstat64(int ver, const char * path, struct stat64 * stat_buf){
         orig_stat64 = (t_stat64)dlsym(RTLD_NEXT,"__lxstat64");
         return orig_stat64( ver, path, stat_buf);
     }
-    return 0;
+    return -1;
 }
 int symlink(const char *path1, const char *path2){
      if ( path_check("symlink", path2) ){
@@ -309,7 +309,7 @@ int symlink(const char *path1, const char *path2){
         orig_symlink = (t_symlink)dlsym(RTLD_NEXT,"symlink");
         return orig_symlink( path1, path2);
     }   
-    return 0; 
+    return  -1; 
 }
 
 int unlink(const char *path){
@@ -318,32 +318,30 @@ int unlink(const char *path){
         orig_unlink = (t_unlink)dlsym(RTLD_NEXT,"unlink");
         return orig_unlink( path);
     }   
-    return 0; 
+    return  -1; 
 }
+
+int fstat(int fd, struct stat *buf){
+	fprintf(stderr, "[sandbox] fstat: not allowed\n");
+}  
 int execl(const char *path, const char *arg0, ...){
-    printf("[sandbox] execl(%s): not allowed\n", path);    
+    fprintf(stderr,"[sandbox] execl(%s): not allowed\n", path);    
 }
 int execle(const char *path, const char *arg0, ...){
-    printf("[sandbox] execle(%s): not allowed\n", path);  
+    fprintf(stderr,"[sandbox] execle(%s): not allowed\n", path);  
 }
 int execlp(const char *file, const char *arg0, ...){
-    printf("[sandbox] execlp(%s): not allowed\n", file);  
+    fprintf(stderr,"[sandbox] execlp(%s): not allowed\n", file);  
 }
 int execv(const char *path, char *const argv[]){
-    printf("[sandbox] execv(%s): not allowed\n", path);  
+    fprintf(stderr,"[sandbox] execv(%s): not allowed\n", path);  
 }
 int execve(const char *path, char *const argv[], char *const envp[]){
-    printf("[sandbox] execve(%s): not allowed\n", path);  
+    fprintf(stderr,"[sandbox] execve(%s): not allowed\n", path);  
 }
 int execvp(const char *file, char *const argv[]){
-    printf("[sandbox] execvp(%s): not allowed\n", file);  
+    fprintf(stderr,"[sandbox] execvp(%s): not allowed\n", file);  
 }
 int system(const char *command){
-    printf("[sandbox] system(%s): not allowed\n", command);
-}
-int dup(int oldfd){
-	printf("[sandbox] dup(%d): not allowed\n", oldfd);
-}
-int dup2(int oldfd, int newfd){
-	printf("[sandbox] dup2(%d, %d): not allowed\n", oldfd, newfd);
+    fprintf(stderr,"[sandbox] system(%s): not allowed\n", command);
 }

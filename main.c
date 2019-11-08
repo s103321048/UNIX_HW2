@@ -44,6 +44,7 @@ int command_getopt(int argc, char *argv[])
 				fprintf(stderr, "No such path exist\n");
 				exit(0);
 			}
+			strcat( exist_so , "/sandboxso.so");
 			setenv( "LD_PRELOAD", exist_so,1);  
             break;  
         case 'd':
@@ -95,9 +96,6 @@ int command_getopt(int argc, char *argv[])
 		execvp(arg[0], arg);
 	}
 //	printf("pl=%d \ndl=%d \n--=%d\n", pl, dl, ddl);
-
-
-
 	return 0;
 }
 
